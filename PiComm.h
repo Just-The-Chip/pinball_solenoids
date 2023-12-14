@@ -14,7 +14,7 @@ struct PiMessage {
 class PiComm {
   public:
     PiComm();
-    void handleMessages(MessageHandler* handlers[]);
+    void handleIncomingMessages(MessageHandler* handlers[]);
     void queueOutgoingMessage(PiMessage message);
     void writeQueuedMessages();
 

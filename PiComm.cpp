@@ -8,7 +8,7 @@ PiComm::PiComm() {
 }
 
 // expected message format: 
-void PiComm::handleMessages(MessageHandler* handlers[]) {
+void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
   uint8_t max_id = sizeof(handlers) / sizeof(handlers[0]);
   while(available() > 0) {
     unsigned char message[MESSAGE_LENGTH];
