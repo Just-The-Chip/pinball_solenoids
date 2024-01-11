@@ -1,5 +1,4 @@
 #include "PiComm.h"
-#include "Arduino.h"
 #include <ArduinoQueue.h>
 
 PiComm::PiComm() {
@@ -20,7 +19,7 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
       unsigned char message_content = message[1];
 
       // if handler_id is within bounds of the handlers array
-      if(handler_id < max_id) {
+      if(handler_id < max_id && handlers[handler_id] != NULL) {
         handlers[handler_id]->handleMessage(handler_id, message_content);
       }
     }
@@ -28,7 +27,11 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
 }
 
 // not sure what happens when queue gets to max size
-void PiComm::queueOutgoingMessage(PiMessage message) {
+void PiComm::queueOutgoingMessage(uint8_t component_id, unsigned char message_content) {
+  struct PiMessage message;
+  message.id = component_id;
+  message.content = message_content;
+  
   writeQueue->enqueue(message);
 }
 

@@ -1,6 +1,7 @@
 #pragma once
+#include <stdint.h>
 #include "Arduino.h"
-#include "MessageHandler.h"
+#include "Interfaces.h"
 #include <ArduinoQueue.h>
 
 #define MESSAGE_TERMINATOR '\n'
@@ -11,11 +12,11 @@ struct PiMessage {
   unsigned char content;
 };
 
-class PiComm {
+class PiComm : public MessageQueue {
   public:
     PiComm();
     void handleIncomingMessages(MessageHandler* handlers[]);
-    void queueOutgoingMessage(PiMessage message);
+    void queueOutgoingMessage(uint8_t component_id, unsigned char message_content);
     void writeQueuedMessages();
 
   protected:
