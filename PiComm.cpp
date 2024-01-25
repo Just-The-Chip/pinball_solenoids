@@ -28,6 +28,7 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
 
 // not sure what happens when queue gets to max size
 void PiComm::queueOutgoingMessage(uint8_t component_id, unsigned char message_content) {
+  // Serial.println("queue boo");
   struct PiMessage message;
   message.id = component_id;
   message.content = message_content;

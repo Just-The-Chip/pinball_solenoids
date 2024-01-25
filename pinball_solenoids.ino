@@ -22,6 +22,10 @@ PiComm *comm;
 void setup() {
   delay(500);
 
+  Serial.begin(115200);
+
+  comm = new PiComm();
+
   popBumper1 = new PopBumper(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, 50, HIGH, HIGH);
   popBumper2 = new PopBumper(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, 50, HIGH, HIGH);
   popBumper3 = new PopBumper(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, 50, HIGH, HIGH);
@@ -29,8 +33,6 @@ void setup() {
   setupPopBumper(popBumper1, 0);
   setupPopBumper(popBumper2, 1);
   setupPopBumper(popBumper3, 2);
-
-  comm = new PiComm();
 }
 
 void setupPopBumper(PopBumper *popbumper, uint8_t id) {

@@ -15,13 +15,13 @@ struct PiMessage {
 class PiComm : public MessageQueue {
   public:
     PiComm();
-    void handleIncomingMessages(MessageHandler* handlers[]);
-    void queueOutgoingMessage(uint8_t component_id, unsigned char message_content);
-    void writeQueuedMessages();
+    virtual void handleIncomingMessages(MessageHandler* handlers[]);
+    virtual void queueOutgoingMessage(uint8_t component_id, unsigned char message_content);
+    virtual void writeQueuedMessages();
 
   protected:
-    int available();
-    void writeMessage(PiMessage message);
+    virtual int available();
+    virtual void writeMessage(PiMessage message);
 
     ArduinoQueue<PiMessage> *writeQueue;
 };

@@ -16,8 +16,10 @@ class PopBumper : public TimedOutputComponent {
     virtual void setComponentID(uint8_t id);
     virtual void setMessageQueue(MessageQueue* queue);
     virtual void triggerOutput();
+    virtual void untriggerOutput();
 
   protected:
     uint8_t component_id;
+    bool alreadyTriggered; 
     MessageQueue* writeQueue;
 };
