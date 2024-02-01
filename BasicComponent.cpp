@@ -1,10 +1,15 @@
+#include "Arduino.h"
 #include "BasicComponent.h"
 
-BasicComponent::BasicComponent(int _pinIn, int _pinOut, bool _inputRestValue, bool _outputRestValue) {
+BasicComponent::BasicComponent(int _pinIn, int _pinOut, bool _inputRestValue, bool _outputRestValue, unsigned long _debounceDelay) {
   pinIn = _pinIn;
   pinOut = _pinOut;
   inputRestValue = _inputRestValue;
   outputRestValue = _outputRestValue;
+  debounceDelay = _debounceDelay;
+
+  lastInputState = inputRestValue;
+  currentInputState = inputRestValue;
 
   pinMode(pinIn, INPUT_PULLUP);
   pinMode(pinOut, OUTPUT);
@@ -31,6 +36,21 @@ bool BasicComponent::shouldTriggerOutput() {
 }
 
 bool BasicComponent::inputActivated() {
-  bool pinVal = digitalRead(pinIn);
+  bool pinVal = debouncedInputRead();
   return inputRestValue == LOW ? pinVal : !pinVal;
+}
+
+bool BasicComponent::debouncedInputRead() {
+  bool pinVal = digitalRead(pinIn);
+
+  if (pinVal != lastInputState) {
+    debounceTime = millis();
+    lastInputState = pinVal;
+  }
+
+  if (currentInputState != pinVal && (millis() - debounceTime) >= debounceDelay) {
+    currentInputState = pinVal;
+  }
+
+  return currentInputState;
 }

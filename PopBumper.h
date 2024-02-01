@@ -2,9 +2,9 @@
 #include <stdint.h>
 #include "Arduino.h"
 #include "Interfaces.h"
-#include "TimedOutputComponent.h"
+#include "BasicComponent.h"
 
-class PopBumper : public TimedOutputComponent {
+class PopBumper : public BasicComponent {
   public:
     PopBumper(
       int _pinIn, 

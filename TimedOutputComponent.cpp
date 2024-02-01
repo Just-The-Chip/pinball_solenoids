@@ -1,8 +1,8 @@
 // #include "BasicComponent.h"
 #include "TimedOutputComponent.h"
 
-TimedOutputComponent::TimedOutputComponent(int _pinIn, int _pinOut, unsigned long _outputDuration, bool _inputRestValue, bool _outputRestValue) :
-  BasicComponent(_pinIn, _pinOut, _inputRestValue, _outputRestValue) {
+TimedOutputComponent::TimedOutputComponent(int _pinIn, int _pinOut, unsigned long _outputDuration, bool _inputRestValue, bool _outputRestValue, unsigned long _debounceDelay) :
+  BasicComponent(_pinIn, _pinOut, _inputRestValue, _outputRestValue, _debounceDelay) {
 
   outputDuration = _outputDuration;
   outputOnTime = 0;
@@ -11,18 +11,13 @@ TimedOutputComponent::TimedOutputComponent(int _pinIn, int _pinOut, unsigned lon
 void TimedOutputComponent::update() {
   lastUpdateTime = millis();
 
-  if(inputActivated() && outputOnTime == 0) {
+  if(inputActivated()) {
     outputOnTime = lastUpdateTime;
   }
 
   BasicComponent::update();
-
-  if (!shouldTriggerOutput()) {
-    outputOnTime = 0;
-  }
 }
 
 bool TimedOutputComponent::shouldTriggerOutput() {
-  bool shouldTrigger = outputOnTime + outputDuration >= lastUpdateTime;
-  return shouldTrigger;
+  return outputDuration >= lastUpdateTime - outputOnTime;
 }

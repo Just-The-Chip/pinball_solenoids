@@ -9,7 +9,8 @@ class TimedOutputComponent : public BasicComponent {
       int _pinOut,
       unsigned long _outputDuration,
       bool _inputRestValue = HIGH,
-      bool _outputRestValue = LOW      
+      bool _outputRestValue = LOW,
+      unsigned long _debounceDelay = 10
     );
     virtual void update();
     virtual bool shouldTriggerOutput();

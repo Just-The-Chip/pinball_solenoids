@@ -2,7 +2,7 @@
 // #include "TimedOutputComponent.h"
 
 PopBumper::PopBumper(int _pinIn, int _pinOut, unsigned long _outputDuration, bool _inputRestValue, bool _outputRestValue) :
-  TimedOutputComponent(_pinIn, _pinOut, _outputDuration, _inputRestValue, _outputRestValue) {
+  BasicComponent(_pinIn, _pinOut, _inputRestValue, _outputRestValue) {
     alreadyTriggered = false;
 }
 
@@ -15,7 +15,7 @@ void PopBumper::setComponentID(uint8_t id) {
 }
 
 void PopBumper::triggerOutput() {
-  TimedOutputComponent::triggerOutput();
+  BasicComponent::triggerOutput();
 
   if(!alreadyTriggered) {
     alreadyTriggered = true; 
@@ -25,6 +25,6 @@ void PopBumper::triggerOutput() {
 }
 
 void PopBumper::untriggerOutput() {
-  TimedOutputComponent::untriggerOutput();
+  BasicComponent::untriggerOutput();
   alreadyTriggered = false;
 }
