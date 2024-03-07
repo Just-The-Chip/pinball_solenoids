@@ -1,6 +1,7 @@
 #include "PiComm.h"
 #include "BasicComponent.h"
 #include "OutputComponent.h"
+#include "InputCommOutComponent.h"
 #include "Interfaces.h"
 
 #define BTN1_PIN 25 // left flipper
@@ -32,6 +33,11 @@
 
 #define LAUNCHER 48
 
+#define LEFT_TARGET_1 18
+#define LEFT_TARGET_2 19
+#define LEFT_TARGET_3 20
+#define LEFT_TARGET_4 21
+
 MessageHandler* handlers[7];
 
 BasicComponent *leftFlipper;
@@ -46,6 +52,11 @@ OutputComponent *rampReturn;
 OutputComponent *popBumper1;
 OutputComponent *popBumper2;
 OutputComponent *popBumper3;
+
+InputCommOutComponent *leftTarget1;
+InputCommOutComponent *leftTarget2;
+InputCommOutComponent *leftTarget3;
+InputCommOutComponent *leftTarget4;
 
 PiComm *comm;
 
@@ -82,9 +93,29 @@ void setup() {
   setupOutputComponent(popBumper1, 4);
   setupOutputComponent(popBumper2, 5);
   setupOutputComponent(popBumper3, 6);
+
+  // static targets
+  leftTarget1 = new InputCommOutComponent(LEFT_TARGET_1, HIGH);
+  leftTarget2 = new InputCommOutComponent(LEFT_TARGET_2, HIGH);
+  leftTarget3 = new InputCommOutComponent(LEFT_TARGET_3, HIGH);
+  leftTarget4 = new InputCommOutComponent(LEFT_TARGET_4, HIGH);
+
+  setupInputOutComm(leftTarget1, 7);
+  setupInputOutComm(leftTarget2, 8);
+  setupInputOutComm(leftTarget3, 9);
+  setupInputOutComm(leftTarget3, 10);
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
+  component->setComponentID(id);
+  component->setMessageQueue(comm);
+
+  // this is to make sure that even if a component does not need to react to an incomming message, 
+  // the IDs are still lined up to the component. OutputComponents are output only.
+  handlers[id] = NULL;
+}
+
+void setupInputOutComm(InputCommOutComponent *component, uint8_t id) {
   component->setComponentID(id);
   component->setMessageQueue(comm);
 
@@ -120,4 +151,9 @@ void updatePlayModeComponents() {
   popBumper1->update();
   popBumper2->update();
   popBumper3->update();
+
+  leftTarget1->update();
+  leftTarget2->update();
+  leftTarget3->update();
+  leftTarget4->update();
 }
