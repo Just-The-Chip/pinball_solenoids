@@ -31,14 +31,12 @@
 #define RAMP_RETURN_OUT 51
 #define RAMP_RETURN_IN 32
 
-#define LAUNCHER 48
-
 #define LEFT_TARGET_1 18
 #define LEFT_TARGET_2 19
 #define LEFT_TARGET_3 20
 #define LEFT_TARGET_4 21
 
-MessageHandler* handlers[7];
+MessageHandler* handlers[11];
 
 BasicComponent *leftFlipper;
 BasicComponent *rightFlipper;
