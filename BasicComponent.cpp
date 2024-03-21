@@ -10,6 +10,7 @@ BasicComponent::BasicComponent(int _pinIn, int _pinOut, bool _inputRestValue, bo
 
   lastInputState = inputRestValue;
   currentInputState = inputRestValue;
+  debounceTime = 0;
 
   pinMode(pinIn, INPUT_PULLUP);
   pinMode(pinOut, OUTPUT);

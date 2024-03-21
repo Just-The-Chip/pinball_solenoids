@@ -36,7 +36,7 @@
 #define LEFT_TARGET_3 20
 #define LEFT_TARGET_4 21
 
-MessageHandler* handlers[11];
+MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
 BasicComponent *rightFlipper;
@@ -101,7 +101,7 @@ void setup() {
   setupInputOutComm(leftTarget1, 7);
   setupInputOutComm(leftTarget2, 8);
   setupInputOutComm(leftTarget3, 9);
-  setupInputOutComm(leftTarget3, 10);
+  setupInputOutComm(leftTarget4, 11); // 10 correspons to \n in ascii so we skip it
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {

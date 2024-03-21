@@ -9,6 +9,8 @@ InputCommOutComponent::InputCommOutComponent(int _pinIn, bool _inputRestValue, u
 
   lastInputState = inputRestValue;
   currentInputState = inputRestValue;
+  debounceTime = 0;
+  alreadyTriggered = false;
 
   pinMode(pinIn, INPUT_PULLUP);
 }

@@ -6,6 +6,7 @@ TimedOutputComponent::TimedOutputComponent(int _pinIn, int _pinOut, unsigned lon
 
   outputDuration = _outputDuration;
   outputOnTime = 0;
+  lastUpdateTime = 0;
 }
 
 void TimedOutputComponent::update() {
