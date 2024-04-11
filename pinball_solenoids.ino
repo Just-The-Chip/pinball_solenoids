@@ -4,14 +4,14 @@
 #include "InputCommOutComponent.h"
 #include "Interfaces.h"
 
-#define BTN1_PIN 25 // left flipper
-#define BTN2_PIN 24 // right flipper
+#define BTN1_PIN 25 // left flipper in
+#define BTN2_PIN 24 // right flipper in
 
 #define FLIPPER_L 27
 #define FLIPPER_R 26
 
 #define START_IN 33
-#define LAUNCHER 48
+#define LAUNCHER 39 // solonoid 1 //48
 
 #define POP_BUMPER_1_IN 37   // top
 #define POP_BUMPER_1_OUT 46
@@ -36,10 +36,15 @@
 #define LEFT_TARGET_3 20
 #define LEFT_TARGET_4 21
 
+#define RIGHT_SECONDARY_FLIPPER 38
+#define LEFT_SECONDARY_FLIPPER 40
+
 MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
 BasicComponent *rightFlipper;
+BasicComponent *leftSecondaryFlipper;
+BasicComponent *rightSecondaryFlipper;
 
 OutputComponent *leftSling;
 OutputComponent *rightSling;
@@ -69,24 +74,27 @@ void setup() {
   leftFlipper = new BasicComponent(BTN1_PIN, FLIPPER_L);
   rightFlipper = new BasicComponent(BTN2_PIN, FLIPPER_R);
 
+  leftSecondaryFlipper = new BasicComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER);
+  rightSecondaryFlipper = new BasicComponent(BTN2_PIN, RIGHT_SECONDARY_FLIPPER);
+
   // slingshots - output only
-  leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, HIGH, HIGH);
-  rightSling = new OutputComponent(RIGHT_SLING_IN, RIGHT_SLING_OUT, HIGH, HIGH);
+  leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, LOW, HIGH);
+  rightSling = new OutputComponent(RIGHT_SLING_IN, RIGHT_SLING_OUT, LOW, HIGH);
 
   setupOutputComponent(leftSling, 0);
   setupOutputComponent(rightSling, 1);
 
   // ball return and launch - output only
-  launcher = new OutputComponent(START_IN, LAUNCHER, LOW, HIGH, 20);
-  rampReturn = new OutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, HIGH, HIGH, 20);
+  launcher = new OutputComponent(START_IN, LAUNCHER, HIGH, HIGH, 20);
+  rampReturn = new OutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, LOW, HIGH, 20);
 
   setupOutputComponent(launcher, 2); // round start
   setupOutputComponent(rampReturn, 3); // round end or multiball stuff idk
 
   // pop bumpers - output only
-  popBumper1 = new OutputComponent(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, HIGH, HIGH);
-  popBumper2 = new OutputComponent(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, HIGH, HIGH);
-  popBumper3 = new OutputComponent(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, HIGH, HIGH);
+  popBumper1 = new OutputComponent(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, LOW, HIGH);
+  popBumper2 = new OutputComponent(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, LOW, HIGH);
+  popBumper3 = new OutputComponent(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, LOW, HIGH);
 
   setupOutputComponent(popBumper1, 4);
   setupOutputComponent(popBumper2, 5);
@@ -140,6 +148,9 @@ void updateStartGameComponents() {
 void updatePlayModeComponents() {
   leftFlipper->update();
   rightFlipper->update();
+
+  leftSecondaryFlipper->update();
+  rightSecondaryFlipper->update();
 
   rampReturn->update();
 
