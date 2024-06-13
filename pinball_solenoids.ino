@@ -85,26 +85,26 @@ void setup() {
   setupOutputComponent(rightSling, 1);
 
   // ball return and launch - output only
-  launcher = new OutputComponent(START_IN, LAUNCHER, HIGH, HIGH, 20);
-  rampReturn = new OutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, LOW, HIGH, 20);
+  launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
+  rampReturn = new OutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, HIGH, LOW, 20);
 
   setupOutputComponent(launcher, 2); // round start
   setupOutputComponent(rampReturn, 3); // round end or multiball stuff idk
 
   // pop bumpers - output only
-  popBumper1 = new OutputComponent(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, LOW, HIGH);
-  popBumper2 = new OutputComponent(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, LOW, HIGH);
-  popBumper3 = new OutputComponent(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, LOW, HIGH);
+  popBumper1 = new OutputComponent(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, HIGH, LOW);
+  popBumper2 = new OutputComponent(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, HIGH, LOW);
+  popBumper3 = new OutputComponent(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, HIGH, LOW);
 
   setupOutputComponent(popBumper1, 4);
   setupOutputComponent(popBumper2, 5);
   setupOutputComponent(popBumper3, 6);
 
   // static targets
-  leftTarget1 = new InputCommOutComponent(LEFT_TARGET_1, HIGH);
-  leftTarget2 = new InputCommOutComponent(LEFT_TARGET_2, HIGH);
-  leftTarget3 = new InputCommOutComponent(LEFT_TARGET_3, HIGH);
-  leftTarget4 = new InputCommOutComponent(LEFT_TARGET_4, HIGH);
+  leftTarget1 = new InputCommOutComponent(LEFT_TARGET_1, HIGH, 4);
+  leftTarget2 = new InputCommOutComponent(LEFT_TARGET_2, HIGH, 4);
+  leftTarget3 = new InputCommOutComponent(LEFT_TARGET_3, HIGH, 4);
+  leftTarget4 = new InputCommOutComponent(LEFT_TARGET_4, HIGH, 4);
 
   setupInputOutComm(leftTarget1, 7);
   setupInputOutComm(leftTarget2, 8);
