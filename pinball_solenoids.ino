@@ -2,6 +2,7 @@
 #include "BasicComponent.h"
 #include "OutputComponent.h"
 #include "TimedOutputComponent.h"
+#include "DualOutputComponent.h"
 #include "InputCommOutComponent.h"
 #include "Interfaces.h"
 
@@ -39,12 +40,16 @@
 
 #define RIGHT_SECONDARY_FLIPPER 38
 #define LEFT_SECONDARY_FLIPPER 40
+#define LEFT_SECONDARY_LFLIPPER 43
+
+#define RETURN_LANE 28
+#define RIGHT_UPPER_LANE 36
 
 MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
 BasicComponent *rightFlipper;
-BasicComponent *leftSecondaryFlipper;
+DualOutputComponent *leftSecondaryFlipper;
 BasicComponent *rightSecondaryFlipper;
 
 OutputComponent *leftSling;
@@ -62,6 +67,9 @@ InputCommOutComponent *leftTarget2;
 InputCommOutComponent *leftTarget3;
 InputCommOutComponent *leftTarget4;
 
+InputCommOutComponent *returnLane;
+InputCommOutComponent *rightUpperLane;
+
 PiComm *comm;
 
 void setup() {
@@ -75,19 +83,19 @@ void setup() {
   leftFlipper = new BasicComponent(BTN1_PIN, FLIPPER_L);
   rightFlipper = new BasicComponent(BTN2_PIN, FLIPPER_R);
 
-  leftSecondaryFlipper = new BasicComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER);
+  leftSecondaryFlipper = new DualOutputComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER, LEFT_SECONDARY_LFLIPPER, 150);
   rightSecondaryFlipper = new BasicComponent(BTN2_PIN, RIGHT_SECONDARY_FLIPPER);
 
   // slingshots - output only
-  leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, LOW, HIGH);
-  rightSling = new OutputComponent(RIGHT_SLING_IN, RIGHT_SLING_OUT, LOW, HIGH);
+  leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, HIGH, LOW);
+  rightSling = new OutputComponent(RIGHT_SLING_IN, RIGHT_SLING_OUT, HIGH, LOW);
 
   setupOutputComponent(leftSling, 0);
   setupOutputComponent(rightSling, 1);
 
   // ball return and launch - output only
   launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
-  rampReturn = new TimedOutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, 500, HIGH, LOW, 20);
+  rampReturn = new TimedOutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, 150, HIGH, LOW, 20);
 
   setupOutputComponent(launcher, 2); // round start
   setupOutputComponent(rampReturn, 3); // round end or multiball stuff idk
@@ -111,6 +119,13 @@ void setup() {
   setupInputOutComm(leftTarget2, 8);
   setupInputOutComm(leftTarget3, 9);
   setupInputOutComm(leftTarget4, 11); // 10 correspons to \n in ascii so we skip it
+
+  // lane buttons
+  returnLane = new InputCommOutComponent(RETURN_LANE, HIGH, 4);
+  rightUpperLane = new InputCommOutComponent(RIGHT_UPPER_LANE, HIGH, 4);
+
+  setupInputOutComm(returnLane, 15);
+  setupInputOutComm(rightUpperLane, 16);
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
@@ -166,4 +181,7 @@ void updatePlayModeComponents() {
   leftTarget2->update();
   leftTarget3->update();
   leftTarget4->update();
+
+  returnLane->update();
+  rightUpperLane->update();
 }

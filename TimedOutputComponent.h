@@ -1,6 +1,5 @@
 #pragma once
 #include <stdint.h>
-#include "BasicComponent.h"
 #include "OutputComponent.h"
 
 class TimedOutputComponent : public OutputComponent {
@@ -20,4 +19,5 @@ class TimedOutputComponent : public OutputComponent {
     unsigned long outputDuration;
     unsigned long outputOnTime;
     unsigned long lastUpdateTime;
+    bool TimeElapsed();
 };

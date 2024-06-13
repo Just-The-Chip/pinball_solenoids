@@ -20,5 +20,9 @@ void TimedOutputComponent::update() {
 }
 
 bool TimedOutputComponent::shouldTriggerOutput() {
+  return TimeElapsed();
+}
+
+bool TimedOutputComponent::TimeElapsed() {
   return outputDuration >= lastUpdateTime - outputOnTime;
 }
