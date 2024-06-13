@@ -1,6 +1,7 @@
 #include "PiComm.h"
 #include "BasicComponent.h"
 #include "OutputComponent.h"
+#include "TimedOutputComponent.h"
 #include "InputCommOutComponent.h"
 #include "Interfaces.h"
 
@@ -50,7 +51,7 @@ OutputComponent *leftSling;
 OutputComponent *rightSling;
 
 OutputComponent *launcher;
-OutputComponent *rampReturn;
+TimedOutputComponent *rampReturn;
 
 OutputComponent *popBumper1;
 OutputComponent *popBumper2;
@@ -86,7 +87,7 @@ void setup() {
 
   // ball return and launch - output only
   launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
-  rampReturn = new OutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, HIGH, LOW, 20);
+  rampReturn = new TimedOutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, 500, HIGH, LOW, 20);
 
   setupOutputComponent(launcher, 2); // round start
   setupOutputComponent(rampReturn, 3); // round end or multiball stuff idk

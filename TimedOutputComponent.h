@@ -1,8 +1,9 @@
 #pragma once
 #include <stdint.h>
 #include "BasicComponent.h"
+#include "OutputComponent.h"
 
-class TimedOutputComponent : public BasicComponent {
+class TimedOutputComponent : public OutputComponent {
   public:
     TimedOutputComponent(
       int _pinIn, 
