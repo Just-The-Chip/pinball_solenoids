@@ -76,7 +76,7 @@ void setup() {
   delay(500);
 
   Serial.begin(115200);
-
+  
   comm = new PiComm();
 
   // flippers don't need to do any communication

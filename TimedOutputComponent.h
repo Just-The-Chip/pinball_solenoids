@@ -20,4 +20,6 @@ class TimedOutputComponent : public OutputComponent {
     unsigned long outputOnTime;
     unsigned long lastUpdateTime;
     bool TimeElapsed();
+    bool timeSet = false;
+    void untriggerOutput();
 };

@@ -14,6 +14,7 @@ class DualOutputComponent : public TimedOutputComponent {
       unsigned long _debounceDelay = 10
     );
     virtual void triggerOutput();
+    virtual void untriggerOutput();
     virtual bool shouldTriggerOutput();
 
   protected:

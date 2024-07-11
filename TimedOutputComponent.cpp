@@ -12,17 +12,30 @@ TimedOutputComponent::TimedOutputComponent(int _pinIn, int _pinOut, unsigned lon
 void TimedOutputComponent::update() {
   lastUpdateTime = millis();
 
-  if(inputActivated()) {
+  if(inputActivated() && !timeSet) {
     outputOnTime = lastUpdateTime;
+    timeSet = true;
   }
 
   BasicComponent::update();
 }
 
 bool TimedOutputComponent::shouldTriggerOutput() {
+  Serial.println(TimeElapsed());
   return TimeElapsed();
 }
 
 bool TimedOutputComponent::TimeElapsed() {
+  
   return outputDuration >= lastUpdateTime - outputOnTime;
+}
+
+// this is for overriding
+// void TimedOutputComponent::resetLatch() {
+//   if(TimeElapsed()) timeSet = false;
+// }
+
+void TimedOutputComponent::untriggerOutput() {
+  timeSet = false;
+  BasicComponent::untriggerOutput();
 }
