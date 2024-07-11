@@ -10,7 +10,7 @@ DualOutputComponent::DualOutputComponent(int _pinIn, int _pinOut, int _lowPinOut
 }
 
 void DualOutputComponent::triggerOutput() { 
-  if (TimeElapsed()) {
+  if (!TimeElapsed()) {
     digitalWrite(pinOut, !outputRestValue);
     digitalWrite(lowPowerPin, outputRestValue);
   } else {

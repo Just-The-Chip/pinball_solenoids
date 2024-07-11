@@ -21,19 +21,16 @@ void TimedOutputComponent::update() {
 }
 
 bool TimedOutputComponent::shouldTriggerOutput() {
-  Serial.println(TimeElapsed());
-  return TimeElapsed();
+  // Serial.println(TimeElapsed());
+  return !TimeElapsed();
 }
 
 bool TimedOutputComponent::TimeElapsed() {
-  
-  return outputDuration >= lastUpdateTime - outputOnTime;
+// Serial.print(lastUpdateTime);
+// Serial.print(' ');
+// Serial.println(outputOnTime);
+return outputDuration <= lastUpdateTime - outputOnTime;
 }
-
-// this is for overriding
-// void TimedOutputComponent::resetLatch() {
-//   if(TimeElapsed()) timeSet = false;
-// }
 
 void TimedOutputComponent::untriggerOutput() {
   timeSet = false;
