@@ -10,7 +10,7 @@ void OutputComponent::setMessageQueue(MessageQueue* queue) {
   writeQueue = queue;
 }
 
-void OutputComponent::setComponentID(uint8_t id) {
+void OutputComponent::setComponentID(uint8_t id) { 
   component_id = id;
 }
 

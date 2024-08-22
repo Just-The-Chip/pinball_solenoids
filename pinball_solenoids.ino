@@ -38,9 +38,15 @@
 #define LEFT_TARGET_3 20
 #define LEFT_TARGET_4 21
 
+#define UPPER_TARGET_1 52
+#define UPPER_TARGET_2 60
+#define UPPER_TARGET_3 64
+#define UPPER_TARGET_4 68
+
 #define RIGHT_SECONDARY_FLIPPER 38
+#define RIGHT_SECONDARY_FLIPPER_LOW_POWER 48
 #define LEFT_SECONDARY_FLIPPER 40
-#define LEFT_SECONDARY_LFLIPPER 43
+#define LEFT_SECONDARY_FLIPPER_LOW_POWER 43
 
 #define RETURN_LANE 28
 #define RIGHT_UPPER_LANE 36
@@ -83,8 +89,8 @@ void setup() {
   leftFlipper = new BasicComponent(BTN1_PIN, FLIPPER_L);
   rightFlipper = new BasicComponent(BTN2_PIN, FLIPPER_R);
 
-  leftSecondaryFlipper = new DualOutputComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER, LEFT_SECONDARY_LFLIPPER, 150);
-  rightSecondaryFlipper = new BasicComponent(BTN2_PIN, RIGHT_SECONDARY_FLIPPER);
+  leftSecondaryFlipper = new DualOutputComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER, LEFT_SECONDARY_FLIPPER_LOW_POWER, 150);
+  rightSecondaryFlipper = new DualOutputComponent(BTN2_PIN, RIGHT_SECONDARY_FLIPPER, RIGHT_SECONDARY_FLIPPER_LOW_POWER, 150);
 
   // slingshots - output only
   leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, HIGH, LOW);

@@ -13,10 +13,11 @@
   - current component: EMPTY
 
 ## Solonoid #5: Pin 42
-  - current component: EMPTY
+  - current component: `SPIRAL_LIFT`
+  - Not actually a solonoid
 
 ## Solonoid #6: Pin 43
-  - current component: EMPTY
+  - current component: `LEFT_SECONDARY_FLIPPER_LOW_POWER`
 
 ## Solonoid #7: Pin 44
   - current component: `POP_BUMPER_3_OUT`
@@ -31,7 +32,7 @@
   - current component: `RIGHT_SLING_OUT`
 
 ## Solonoid #11: Pin 48
-  - current component: EMPTY
+  - current component: `RIGHT_SECONDARY_FLIPPER_LOW_POWER`
 
 ## Solonoid #2: Pin 49
   - current component: `LEFT_SLING_OUT`
@@ -47,3 +48,11 @@
 
 ## Solonoid #16: Pin 53
   - current compoent: EMPTY
+
+## Plinko 
+ - 1: Pin 69
+ - 2: Pin 65
+ - 3: Pin 61
+ - 4: Pin 57
+
+ # Magnet Bridge Ball Catch: Pin 55

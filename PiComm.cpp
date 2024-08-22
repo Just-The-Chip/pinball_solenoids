@@ -12,9 +12,10 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
   while(available() > 0) {
     unsigned char message[MESSAGE_LENGTH];
 
-    Serial.readBytes(message, MESSAGE_LENGTH);
+    int bytesRead = Serial.readBytesUntil(MESSAGE_TERMINATOR, message, MESSAGE_LENGTH);
+    // Serial.readBytes(message, MESSAGE_LENGTH);
 
-    if(message[2] == MESSAGE_TERMINATOR) {
+    if(bytesRead == (MESSAGE_TERMINATOR - 1)) {
       uint8_t handler_id = uint8_t(message[0]);
       unsigned char message_content = message[1];
 
