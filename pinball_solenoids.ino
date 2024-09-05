@@ -4,6 +4,7 @@
 #include "TimedOutputComponent.h"
 #include "DualOutputComponent.h"
 #include "InputCommOutComponent.h"
+#include "OutputCommInComponent.h"
 #include "Interfaces.h"
 
 #define BTN1_PIN 25 // left flipper in
@@ -38,7 +39,7 @@
 #define LEFT_TARGET_3 20
 #define LEFT_TARGET_4 21
 
-#define UPPER_TARGET_1 52
+#define UPPER_TARGET_1 56
 #define UPPER_TARGET_2 60
 #define UPPER_TARGET_3 64
 #define UPPER_TARGET_4 68
@@ -50,6 +51,9 @@
 
 #define RETURN_LANE 28
 #define RIGHT_UPPER_LANE 36
+
+#define MAG_BRIDGE_SENSOR 55
+#define MAG_BRIDGE_REJECTOR 52
 
 MessageHandler* handlers[HANDLERS_LENGTH];
 
@@ -75,6 +79,15 @@ InputCommOutComponent *leftTarget4;
 
 InputCommOutComponent *returnLane;
 InputCommOutComponent *rightUpperLane;
+
+InputCommOutComponent *magBridgeSensor;
+
+InputCommOutComponent *upperTarget1;
+InputCommOutComponent *upperTarget2;
+InputCommOutComponent *upperTarget3;
+InputCommOutComponent *upperTarget4;
+
+OutputCommInComponent *magBridgeRejector;
 
 PiComm *comm;
 
@@ -132,6 +145,24 @@ void setup() {
 
   setupInputOutComm(returnLane, 15);
   setupInputOutComm(rightUpperLane, 16);
+
+  // mag bridge static targets
+  upperTarget1 = new InputCommOutComponent(UPPER_TARGET_1, HIGH, 4);
+  upperTarget2 = new InputCommOutComponent(UPPER_TARGET_2, HIGH, 4);
+  upperTarget3 = new InputCommOutComponent(UPPER_TARGET_3, HIGH, 4);
+  upperTarget4 = new InputCommOutComponent(UPPER_TARGET_4, HIGH, 4);
+
+  setupInputOutComm(upperTarget1, 17);
+  setupInputOutComm(upperTarget2, 18);
+  setupInputOutComm(upperTarget3, 19);
+  setupInputOutComm(upperTarget4, 20);
+
+  magBridgeSensor = new InputCommOutComponent(MAG_BRIDGE_SENSOR, HIGH, 50);
+  setupInputOutComm(magBridgeSensor, 21);
+
+  magBridgeRejector = new OutputCommInComponent(MAG_BRIDGE_REJECTOR, 250, LOW);
+  setupMessageHandler(magBridgeRejector, 22);
+
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
@@ -150,6 +181,10 @@ void setupInputOutComm(InputCommOutComponent *component, uint8_t id) {
   // this is to make sure that even if a component does not need to react to an incomming message, 
   // the IDs are still lined up to the component. OutputComponents are output only.
   handlers[id] = NULL;
+}
+
+void setupMessageHandler(MessageHandler *component, uint8_t id) {
+  handlers[id] = component;
 }
 
 void loop() {
@@ -190,4 +225,13 @@ void updatePlayModeComponents() {
 
   returnLane->update();
   rightUpperLane->update();
+
+  upperTarget1->update();
+  upperTarget2->update();
+  upperTarget3->update();
+  upperTarget4->update();
+
+  magBridgeSensor->update();
+  magBridgeRejector->update();
+
 }

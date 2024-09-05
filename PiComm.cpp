@@ -1,3 +1,5 @@
+#include "HardwareSerial.h"
+#include "Arduino.h"
 #include "PiComm.h"
 #include <ArduinoQueue.h>
 
@@ -13,17 +15,25 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
     unsigned char message[MESSAGE_LENGTH];
 
     int bytesRead = Serial.readBytesUntil(MESSAGE_TERMINATOR, message, MESSAGE_LENGTH);
-    // Serial.readBytes(message, MESSAGE_LENGTH);
 
-    if(bytesRead == (MESSAGE_TERMINATOR - 1)) {
+    // Serial.print("MESSAGE RECEIVED BYTES: ");
+    // Serial.print(bytesRead);
+
+    if(bytesRead == (MESSAGE_LENGTH - 1)) {
       uint8_t handler_id = uint8_t(message[0]);
       unsigned char message_content = message[1];
 
+      // Serial.print(" HANDLER ID: ");
+      // Serial.print(handler_id);
+
       // if handler_id is within bounds of the handlers array
       if(handler_id < max_id && handlers[handler_id] != NULL) {
+        // Serial.println(" SUCCESS???");
         handlers[handler_id]->handleMessage(handler_id, message_content);
       }
     }
+
+    // Serial.println(" Donesies.");
   }
 }
 

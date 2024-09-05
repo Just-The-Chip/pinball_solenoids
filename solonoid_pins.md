@@ -53,6 +53,9 @@
  - 1: Pin 69
  - 2: Pin 65
  - 3: Pin 61
- - 4: Pin 57
+ - 4: Pin 56
 
- # Magnet Bridge Ball Catch: Pin 55
+ # Magnet Bridge Ball Catch 
+- Sensor: Pin 55
+- Rejector: Pin 52
+

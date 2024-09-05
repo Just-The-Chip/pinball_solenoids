@@ -26,10 +26,10 @@ bool TimedOutputComponent::shouldTriggerOutput() {
 }
 
 bool TimedOutputComponent::TimeElapsed() {
-// Serial.print(lastUpdateTime);
-// Serial.print(' ');
-// Serial.println(outputOnTime);
-return outputDuration <= lastUpdateTime - outputOnTime;
+  // Serial.print(lastUpdateTime);
+  // Serial.print(' ');
+  // Serial.println(outputOnTime);
+  return outputDuration <= lastUpdateTime - outputOnTime;
 }
 
 void TimedOutputComponent::untriggerOutput() {
