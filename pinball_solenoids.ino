@@ -55,6 +55,9 @@
 #define MAG_BRIDGE_SENSOR 55
 #define MAG_BRIDGE_REJECTOR 52
 
+#define MULTI_BALL_SPINDLE_MOTOR 53
+#define MULTI_BALL_BALL_DETECT 29
+
 MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
@@ -88,6 +91,9 @@ InputCommOutComponent *upperTarget3;
 InputCommOutComponent *upperTarget4;
 
 OutputCommInComponent *magBridgeRejector;
+
+OutputCommInComponent *multiBallSpindleMotor;
+InputCommOutComponent *multiBallBallDetect;
 
 PiComm *comm;
 
@@ -162,7 +168,12 @@ void setup() {
 
   magBridgeRejector = new OutputCommInComponent(MAG_BRIDGE_REJECTOR, 250, LOW);
   setupMessageHandler(magBridgeRejector, 22);
+  
+  multiBallSpindleMotor = new OutputCommInComponent(MULTI_BALL_SPINDLE_MOTOR, 1000, LOW);
+  setupMessageHandler(multiBallSpindleMotor, 23);
 
+  multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
+  setupInputOutComm(multiBallBallDetect, 24);
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
@@ -234,4 +245,6 @@ void updatePlayModeComponents() {
   magBridgeSensor->update();
   magBridgeRejector->update();
 
+  multiBallSpindleMotor->update();
+  multiBallBallDetect->update();
 }
