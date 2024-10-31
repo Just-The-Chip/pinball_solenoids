@@ -55,7 +55,12 @@
  - 3: Pin 61
  - 4: Pin 56
 
- # Magnet Bridge Ball Catch 
+# Magnet Bridge Ball Catch 
 - Sensor: Pin 55
 - Rejector: Pin 52
+
+# Multiball
+ - Release Solenoid: Pin :53
+ - Reset Motor: Pin 41
+ - Rollover switch: Pin 29
 
