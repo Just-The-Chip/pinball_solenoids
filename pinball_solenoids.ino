@@ -163,17 +163,17 @@ void setup() {
   setupInputOutComm(upperTarget3, 19);
   setupInputOutComm(upperTarget4, 20);
 
-  magBridgeSensor = new InputCommOutComponent(MAG_BRIDGE_SENSOR, HIGH, 50);
+  magBridgeSensor = new InputCommOutComponent(MAG_BRIDGE_SENSOR, HIGH, 500);
   setupInputOutComm(magBridgeSensor, 21);
 
   magBridgeRejector = new OutputCommInComponent(MAG_BRIDGE_REJECTOR, 250, LOW);
   setupMessageHandler(magBridgeRejector, 22);
   
   multiBallSpindleMotor = new OutputCommInComponent(MULTI_BALL_SPINDLE_MOTOR, 1000, LOW);
-  setupMessageHandler(multiBallSpindleMotor, 23);
+  setupMessageHandler(multiBallSpindleMotor, 24);
 
   multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
-  setupInputOutComm(multiBallBallDetect, 24);
+  setupInputOutComm(multiBallBallDetect, 25);
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
