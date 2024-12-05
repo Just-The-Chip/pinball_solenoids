@@ -13,7 +13,7 @@
   - current component: EMPTY
 
 ## Solonoid #5: Pin 42
-  - current component: `SPIRAL_LIFT`
+  - current component: `PLINKO_LIFT`
   - Not actually a solonoid
 
 ## Solonoid #6: Pin 43

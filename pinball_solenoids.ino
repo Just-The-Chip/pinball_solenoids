@@ -58,6 +58,13 @@
 #define MULTI_BALL_SPINDLE_MOTOR 53
 #define MULTI_BALL_BALL_DETECT 29
 
+#define PLINKO_LIFT 42
+
+#define PLINKO_LANE1 69
+#define PLINKO_LANE2 65
+#define PLINKO_LANE3 61
+#define PLINKO_LANE4 56
+
 MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
@@ -94,6 +101,13 @@ OutputCommInComponent *magBridgeRejector;
 
 OutputCommInComponent *multiBallSpindleMotor;
 InputCommOutComponent *multiBallBallDetect;
+
+OutputCommInComponent *plinkoLift;
+
+InputCommOutComponent *plinkoLane1;
+InputCommOutComponent *plinkoLane2;
+InputCommOutComponent *plinkoLane3;
+InputCommOutComponent *plinkoLane4;
 
 PiComm *comm;
 
@@ -174,6 +188,19 @@ void setup() {
 
   multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
   setupInputOutComm(multiBallBallDetect, 25);
+
+  plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 10000, LOW);
+  setupMessageHandler(plinkoLift, 26)
+
+  plinkoLane1 = new InputCommOutComponent(PLINKO_LANE1, HIGH, 4);
+  plinkoLane2 = new InputCommOutComponent(PLINKO_LANE2, HIGH, 4);
+  plinkoLane3 = new InputCommOutComponent(PLINKO_LANE3, HIGH, 4);
+  plinkoLane4 = new InputCommOutComponent(PLINKO_LANE4, HIGH, 4);
+
+  setupInputOutComm(plinkoLane1, 27);
+  setupInputOutComm(plinkoLane2, 28);
+  setupInputOutComm(plinkoLane3, 29);
+  setupInputOutComm(plinkoLane4, 30);
 }
 
 void setupOutputComponent(OutputComponent *component, uint8_t id) {
