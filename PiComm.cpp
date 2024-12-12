@@ -28,7 +28,7 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
 
       // if handler_id is within bounds of the handlers array
       if(handler_id < max_id && handlers[handler_id] != NULL) {
-        // Serial.println(" SUCCESS???");
+        // Serial.print(" SUCCESS???");
         handlers[handler_id]->handleMessage(handler_id, message_content);
       }
     }

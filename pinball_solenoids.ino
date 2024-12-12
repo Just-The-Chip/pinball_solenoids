@@ -190,7 +190,7 @@ void setup() {
   setupInputOutComm(multiBallBallDetect, 25);
 
   plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 10000, LOW);
-  setupMessageHandler(plinkoLift, 26)
+  setupMessageHandler(plinkoLift, 26);
 
   plinkoLane1 = new InputCommOutComponent(PLINKO_LANE1, HIGH, 4);
   plinkoLane2 = new InputCommOutComponent(PLINKO_LANE2, HIGH, 4);
@@ -274,4 +274,10 @@ void updatePlayModeComponents() {
 
   multiBallSpindleMotor->update();
   multiBallBallDetect->update();
+
+  plinkoLift->update();
+  plinkoLane1->update();
+  plinkoLane2->update();
+  plinkoLane3->update();
+  plinkoLane4->update();
 }
