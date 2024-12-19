@@ -63,7 +63,7 @@
 #define PLINKO_LANE1 69
 #define PLINKO_LANE2 65
 #define PLINKO_LANE3 61
-#define PLINKO_LANE4 56
+#define PLINKO_LANE4 57
 
 MessageHandler* handlers[HANDLERS_LENGTH];
 
