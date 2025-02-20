@@ -4,7 +4,7 @@
 #include "Interfaces.h"
 #include "BasicComponent.h"
 
-class OutputComponent : public BasicComponent {
+class OutputComponent : public BasicComponent, public CommOutInterface {
   public:
     OutputComponent(
       int _pinIn, 

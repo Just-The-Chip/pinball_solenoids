@@ -5,6 +5,7 @@
 #include "DualOutputComponent.h"
 #include "InputCommOutComponent.h"
 #include "OutputCommInComponent.h"
+#include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
 
 #define BTN1_PIN 25 // left flipper in
@@ -65,6 +66,8 @@
 #define PLINKO_LANE3 61
 #define PLINKO_LANE4 57
 
+#define SLIDER A0
+
 MessageHandler* handlers[HANDLERS_LENGTH];
 
 BasicComponent *leftFlipper;
@@ -109,6 +112,8 @@ InputCommOutComponent *plinkoLane2;
 InputCommOutComponent *plinkoLane3;
 InputCommOutComponent *plinkoLane4;
 
+AnalogCommOutComponent *sliderSensor;
+
 PiComm *comm;
 
 void setup() {
@@ -129,24 +134,24 @@ void setup() {
   leftSling = new OutputComponent(LEFT_SLING_IN, LEFT_SLING_OUT, HIGH, LOW);
   rightSling = new OutputComponent(RIGHT_SLING_IN, RIGHT_SLING_OUT, HIGH, LOW);
 
-  setupOutputComponent(leftSling, 0);
-  setupOutputComponent(rightSling, 1);
+  setupCommOutComponent(leftSling, 0);
+  setupCommOutComponent(rightSling, 1);
 
   // ball return and launch - output only
   launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
   rampReturn = new TimedOutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, 150, HIGH, LOW, 20);
 
-  setupOutputComponent(launcher, 2); // round start
-  setupOutputComponent(rampReturn, 3); // round end or multiball stuff idk
+  setupCommOutComponent(launcher, 2); // round start
+  setupCommOutComponent(rampReturn, 3); // round end or multiball stuff idk
 
   // pop bumpers - output only
   popBumper1 = new OutputComponent(POP_BUMPER_1_IN, POP_BUMPER_1_OUT, HIGH, LOW);
   popBumper2 = new OutputComponent(POP_BUMPER_2_IN, POP_BUMPER_2_OUT, HIGH, LOW);
   popBumper3 = new OutputComponent(POP_BUMPER_3_IN, POP_BUMPER_3_OUT, HIGH, LOW);
 
-  setupOutputComponent(popBumper1, 4);
-  setupOutputComponent(popBumper2, 5);
-  setupOutputComponent(popBumper3, 6);
+  setupCommOutComponent(popBumper1, 4);
+  setupCommOutComponent(popBumper2, 5);
+  setupCommOutComponent(popBumper3, 6);
 
   // static targets
   leftTarget1 = new InputCommOutComponent(LEFT_TARGET_1, HIGH, 4);
@@ -154,17 +159,17 @@ void setup() {
   leftTarget3 = new InputCommOutComponent(LEFT_TARGET_3, HIGH, 4);
   leftTarget4 = new InputCommOutComponent(LEFT_TARGET_4, HIGH, 4);
 
-  setupInputOutComm(leftTarget1, 7);
-  setupInputOutComm(leftTarget2, 8);
-  setupInputOutComm(leftTarget3, 9);
-  setupInputOutComm(leftTarget4, 11); // 10 correspons to \n in ascii so we skip it
+  setupCommOutComponent(leftTarget1, 7);
+  setupCommOutComponent(leftTarget2, 8);
+  setupCommOutComponent(leftTarget3, 9);
+  setupCommOutComponent(leftTarget4, 11); // 10 correspons to \n in ascii so we skip it
 
   // lane buttons
   returnLane = new InputCommOutComponent(RETURN_LANE, HIGH, 4);
   rightUpperLane = new InputCommOutComponent(RIGHT_UPPER_LANE, HIGH, 4);
 
-  setupInputOutComm(returnLane, 15);
-  setupInputOutComm(rightUpperLane, 16);
+  setupCommOutComponent(returnLane, 15);
+  setupCommOutComponent(rightUpperLane, 16);
 
   // mag bridge static targets
   upperTarget1 = new InputCommOutComponent(UPPER_TARGET_1, HIGH, 4);
@@ -172,13 +177,13 @@ void setup() {
   upperTarget3 = new InputCommOutComponent(UPPER_TARGET_3, HIGH, 4);
   upperTarget4 = new InputCommOutComponent(UPPER_TARGET_4, HIGH, 4);
 
-  setupInputOutComm(upperTarget1, 17);
-  setupInputOutComm(upperTarget2, 18);
-  setupInputOutComm(upperTarget3, 19);
-  setupInputOutComm(upperTarget4, 20);
+  setupCommOutComponent(upperTarget1, 17);
+  setupCommOutComponent(upperTarget2, 18);
+  setupCommOutComponent(upperTarget3, 19);
+  setupCommOutComponent(upperTarget4, 20);
 
   magBridgeSensor = new InputCommOutComponent(MAG_BRIDGE_SENSOR, HIGH, 500);
-  setupInputOutComm(magBridgeSensor, 21);
+  setupCommOutComponent(magBridgeSensor, 21);
 
   magBridgeRejector = new OutputCommInComponent(MAG_BRIDGE_REJECTOR, 250, LOW);
   setupMessageHandler(magBridgeRejector, 22);
@@ -187,7 +192,7 @@ void setup() {
   setupMessageHandler(multiBallSpindleMotor, 24);
 
   multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
-  setupInputOutComm(multiBallBallDetect, 25);
+  setupCommOutComponent(multiBallBallDetect, 25);
 
   plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 10000, LOW);
   setupMessageHandler(plinkoLift, 26);
@@ -197,22 +202,19 @@ void setup() {
   plinkoLane3 = new InputCommOutComponent(PLINKO_LANE3, HIGH, 4);
   plinkoLane4 = new InputCommOutComponent(PLINKO_LANE4, HIGH, 4);
 
-  setupInputOutComm(plinkoLane1, 27);
-  setupInputOutComm(plinkoLane2, 28);
-  setupInputOutComm(plinkoLane3, 29);
-  setupInputOutComm(plinkoLane4, 30);
+  setupCommOutComponent(plinkoLane1, 27);
+  setupCommOutComponent(plinkoLane2, 28);
+  setupCommOutComponent(plinkoLane3, 29);
+  setupCommOutComponent(plinkoLane4, 30);
+
+  int sliderMinVal = 50;
+  int sliderMaxVal = 630;
+  unsigned long readInterval = 100;
+  sliderSensor = new AnalogCommOutComponent(SLIDER, sliderMinVal, sliderMaxVal, readInterval);
+  setupCommOutComponent(sliderSensor, 31);
 }
 
-void setupOutputComponent(OutputComponent *component, uint8_t id) {
-  component->setComponentID(id);
-  component->setMessageQueue(comm);
-
-  // this is to make sure that even if a component does not need to react to an incomming message, 
-  // the IDs are still lined up to the component. OutputComponents are output only.
-  handlers[id] = NULL;
-}
-
-void setupInputOutComm(InputCommOutComponent *component, uint8_t id) {
+void setupCommOutComponent(CommOutInterface *component, uint8_t id) {
   component->setComponentID(id);
   component->setMessageQueue(comm);
 
@@ -280,4 +282,6 @@ void updatePlayModeComponents() {
   plinkoLane2->update();
   plinkoLane3->update();
   plinkoLane4->update();
+
+  sliderSensor->update();
 }
