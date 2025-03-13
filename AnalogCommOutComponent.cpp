@@ -2,7 +2,7 @@
 #include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
 
-AnalogCommOutComponent::AnalogCommOutComponent(int _pinIn, int _minValue, int _maxValue, unsigned long _readInterval) {
+AnalogCommOutComponent::AnalogCommOutComponent(int _pinIn, unsigned int _minValue, unsigned int _maxValue, unsigned long _readInterval) {
   pinIn = _pinIn;
   minValue = _minValue;
   maxValue = _maxValue;
@@ -44,15 +44,18 @@ bool AnalogCommOutComponent::shouldTriggerComm(unsigned char value) {
 }
 
 unsigned char AnalogCommOutComponent::scaledInputRead() {
-  int pinVal = analogRead(pinIn);
+  unsigned int pinVal = analogRead(pinIn);
 
-  // if(pinVal > minValue) {
-  //   Serial.print("ANALOG READ: ");
-  //   Serial.println(pinVal);
-  // }
+  if(pinVal > minValue) {
+    Serial.print("ANALOG READ: ");
+    Serial.println(pinVal);
+    // Serial.print(" SCALED VALUE: ");
+    // Serial.println(maxValue - minValue);
+  }
+
   pinVal = pinVal < minValue ? minValue : (pinVal > maxValue ? maxValue : pinVal);
 
-  int scaledValue = 100 * (pinVal - minValue) / (maxValue - minValue);
+  unsigned int scaledValue = (100 * (pinVal - minValue)) / (maxValue - minValue);
 
   return uint8_t(scaledValue);
 }
