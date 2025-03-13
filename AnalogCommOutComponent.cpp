@@ -46,12 +46,12 @@ bool AnalogCommOutComponent::shouldTriggerComm(unsigned char value) {
 unsigned char AnalogCommOutComponent::scaledInputRead() {
   unsigned int pinVal = analogRead(pinIn);
 
-  if(pinVal > minValue) {
-    Serial.print("ANALOG READ: ");
-    Serial.println(pinVal);
-    // Serial.print(" SCALED VALUE: ");
-    // Serial.println(maxValue - minValue);
-  }
+  // if(pinVal > minValue) {
+  //   Serial.print("ANALOG READ: ");
+  //   Serial.println(pinVal);
+  //   // Serial.print(" SCALED VALUE: ");
+  //   // Serial.println(maxValue - minValue);
+  // }
 
   pinVal = pinVal < minValue ? minValue : (pinVal > maxValue ? maxValue : pinVal);
 
