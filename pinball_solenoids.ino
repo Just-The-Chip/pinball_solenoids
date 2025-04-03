@@ -78,7 +78,9 @@ BasicComponent *rightSecondaryFlipper;
 OutputComponent *leftSling;
 OutputComponent *rightSling;
 
-OutputComponent *launcher;
+InputCommOutComponent *startButton;
+OutputCommInComponent *launcher;
+// OutputComponent *launcher;
 TimedOutputComponent *rampReturn;
 
 OutputComponent *popBumper1;
@@ -138,10 +140,14 @@ void setup() {
   setupCommOutComponent(rightSling, 1);
 
   // ball return and launch - output only
-  launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
+  startButton = new InputCommOutComponent(START_IN, LOW, 20);
+  launcher = new OutputCommInComponent(LAUNCHER, 100, LOW);
+
+  // launcher = new OutputComponent(START_IN, LAUNCHER, LOW, LOW, 20);
   rampReturn = new TimedOutputComponent(RAMP_RETURN_IN, RAMP_RETURN_OUT, 150, HIGH, LOW, 20);
 
-  setupCommOutComponent(launcher, 2); // round start
+  setupCommOutComponent(startButton, 2); // round start
+  setupMessageHandler(launcher, 32); // launch ball
   setupCommOutComponent(rampReturn, 3); // round end or multiball stuff idk
 
   // pop bumpers - output only
@@ -245,6 +251,9 @@ void updateStartGameComponents() {
 void updatePlayModeComponents() {
   leftFlipper->update();
   rightFlipper->update();
+
+  startButton->update();
+  launcher->update();
 
   leftSecondaryFlipper->update();
   rightSecondaryFlipper->update();
