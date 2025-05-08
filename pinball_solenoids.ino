@@ -5,6 +5,7 @@
 #include "DualOutputComponent.h"
 #include "InputCommOutComponent.h"
 #include "OutputCommInComponent.h"
+#include "OutputCommTimeInComponent.h"
 #include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
 
@@ -80,7 +81,6 @@ OutputComponent *rightSling;
 
 InputCommOutComponent *startButton;
 OutputCommInComponent *launcher;
-// OutputComponent *launcher;
 TimedOutputComponent *rampReturn;
 
 OutputComponent *popBumper1;
@@ -104,7 +104,7 @@ InputCommOutComponent *upperTarget4;
 
 OutputCommInComponent *magBridgeRejector;
 
-OutputCommInComponent *multiBallSpindleMotor;
+OutputCommTimeInComponent *multiBallSpindleMotor;
 InputCommOutComponent *multiBallBallDetect;
 
 OutputCommInComponent *plinkoLift;
@@ -168,7 +168,12 @@ void setup() {
   setupCommOutComponent(leftTarget1, 7);
   setupCommOutComponent(leftTarget2, 8);
   setupCommOutComponent(leftTarget3, 9);
-  setupCommOutComponent(leftTarget4, 11); // 10 correspons to \n in ascii so we skip it
+  handlers[10] = NULL; // 10 correspons to \n in ascii so we skip it
+  setupCommOutComponent(leftTarget4, 11);
+
+  handlers[12] = NULL;
+  handlers[13] = NULL;
+  handlers[14] = NULL;
 
   // lane buttons
   returnLane = new InputCommOutComponent(RETURN_LANE, HIGH, 4);
@@ -193,14 +198,16 @@ void setup() {
 
   magBridgeRejector = new OutputCommInComponent(MAG_BRIDGE_REJECTOR, 250, LOW);
   setupMessageHandler(magBridgeRejector, 22);
+
+  handlers[23] = NULL;
   
-  multiBallSpindleMotor = new OutputCommInComponent(MULTI_BALL_SPINDLE_MOTOR, 1000, LOW);
+  multiBallSpindleMotor = new OutputCommTimeInComponent(MULTI_BALL_SPINDLE_MOTOR, LOW);
   setupMessageHandler(multiBallSpindleMotor, 24);
 
   multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
   setupCommOutComponent(multiBallBallDetect, 25);
 
-  plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 10000, LOW);
+  plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 8000, LOW);
   setupMessageHandler(plinkoLift, 26);
 
   plinkoLane1 = new InputCommOutComponent(PLINKO_LANE1, HIGH, 4);
@@ -218,6 +225,8 @@ void setup() {
   unsigned long readInterval = 20;
   sliderSensor = new AnalogCommOutComponent(SLIDER, sliderMinVal, sliderMaxVal, readInterval);
   setupCommOutComponent(sliderSensor, 31);
+
+  handlers[33] = NULL; // on solonoid board
 }
 
 void setupCommOutComponent(CommOutInterface *component, uint8_t id) {

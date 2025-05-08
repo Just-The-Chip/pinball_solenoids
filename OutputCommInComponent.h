@@ -20,6 +20,6 @@ class OutputCommInComponent : public MessageHandler {
     unsigned long outputDuration;
     unsigned long outputOnTime;
     unsigned long lastUpdateTime;
-    bool timeElapsed();
+    virtual bool timeElapsed();
     bool messageReceived;
 };
