@@ -33,7 +33,7 @@ void OutputCommInComponent::update() {
 
 bool OutputCommInComponent::shouldTriggerOutput() {
   // Serial.println(TimeElapsed());
-  return lastUpdateTime > outputDuration && !timeElapsed();
+  return outputOnTime > 0 && !timeElapsed();
 }
 
 bool OutputCommInComponent::timeElapsed() {

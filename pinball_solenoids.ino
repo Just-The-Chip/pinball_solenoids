@@ -5,6 +5,7 @@
 #include "DualOutputComponent.h"
 #include "InputCommOutComponent.h"
 #include "OutputCommInComponent.h"
+#include "OutputCommInToggleComponent.h"
 #include "OutputCommTimeInComponent.h"
 #include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
@@ -57,6 +58,9 @@
 #define MAG_BRIDGE_SENSOR 55
 #define MAG_BRIDGE_REJECTOR 52
 
+#define MAG_BRIDGE_SPINNER 50
+#define MAG_BRIDGE_SPINNER_STOP 58
+
 #define MULTI_BALL_SPINDLE_MOTOR 53
 #define MULTI_BALL_BALL_DETECT 29
 
@@ -103,6 +107,9 @@ InputCommOutComponent *upperTarget3;
 InputCommOutComponent *upperTarget4;
 
 OutputCommInComponent *magBridgeRejector;
+
+OutputCommInToggleComponent *magBridgeSpinner;
+InputCommOutComponent *magBridgeSpinnerStop;
 
 OutputCommTimeInComponent *multiBallSpindleMotor;
 InputCommOutComponent *multiBallBallDetect;
@@ -204,7 +211,7 @@ void setup() {
   multiBallSpindleMotor = new OutputCommTimeInComponent(MULTI_BALL_SPINDLE_MOTOR, LOW);
   setupMessageHandler(multiBallSpindleMotor, 24);
 
-  multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 50);
+  multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 25);
   setupCommOutComponent(multiBallBallDetect, 25);
 
   plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 8000, LOW);
@@ -227,6 +234,12 @@ void setup() {
   setupCommOutComponent(sliderSensor, 31);
 
   handlers[33] = NULL; // on solonoid board
+
+  // max spin time is 2 minutes
+  magBridgeSpinner = new OutputCommInToggleComponent(MAG_BRIDGE_SPINNER, 120000, LOW);
+  magBridgeSpinnerStop = new InputCommOutComponent(MAG_BRIDGE_SPINNER_STOP, HIGH);
+  setupMessageHandler(magBridgeSpinner, 34);
+  setupCommOutComponent(magBridgeSpinnerStop, 35);
 }
 
 void setupCommOutComponent(CommOutInterface *component, uint8_t id) {
@@ -291,6 +304,8 @@ void updatePlayModeComponents() {
 
   magBridgeSensor->update();
   magBridgeRejector->update();
+  magBridgeSpinner->update();
+  magBridgeSpinnerStop->update();
 
   multiBallSpindleMotor->update();
   multiBallBallDetect->update();
