@@ -57,9 +57,19 @@
 
 #define MAG_BRIDGE_SENSOR 55
 #define MAG_BRIDGE_REJECTOR 52
+#define MAG_BRIDGE_RETURN_ROLLOVER 36
 
 #define MAG_BRIDGE_SPINNER 50
-#define MAG_BRIDGE_SPINNER_STOP 58
+#define MAG_BRIDGE_SPINNER_STOP 30
+
+#define SPINNER_TARGET_1 14
+#define SPINNER_TARGET_2 15
+#define SPINNER_TARGET_3 59 //A5
+#define SPINNER_TARGET_4 63 //A9
+#define SPINNER_TARGET_5 67 //A13
+#define SPINNER_TARGET_6 58 //A4
+#define SPINNER_TARGET_7 62 //A8
+#define SPINNER_TARGET_8 66 //A12
 
 #define MULTI_BALL_SPINDLE_MOTOR 53
 #define MULTI_BALL_BALL_DETECT 29
@@ -100,6 +110,7 @@ InputCommOutComponent *returnLane;
 InputCommOutComponent *rightUpperLane;
 
 InputCommOutComponent *magBridgeSensor;
+InputCommOutComponent *magBridgeReturnRollover;
 
 InputCommOutComponent *upperTarget1;
 InputCommOutComponent *upperTarget2;
@@ -110,6 +121,15 @@ OutputCommInComponent *magBridgeRejector;
 
 OutputCommInToggleComponent *magBridgeSpinner;
 InputCommOutComponent *magBridgeSpinnerStop;
+
+InputCommOutComponent *spinnerTarget1;
+InputCommOutComponent *spinnerTarget2;
+InputCommOutComponent *spinnerTarget3;
+InputCommOutComponent *spinnerTarget4;
+InputCommOutComponent *spinnerTarget5;
+InputCommOutComponent *spinnerTarget6;
+InputCommOutComponent *spinnerTarget7;
+InputCommOutComponent *spinnerTarget8;
 
 OutputCommTimeInComponent *multiBallSpindleMotor;
 InputCommOutComponent *multiBallBallDetect;
@@ -214,7 +234,7 @@ void setup() {
   multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 25);
   setupCommOutComponent(multiBallBallDetect, 25);
 
-  plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 8000, LOW);
+  plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 8500, LOW);
   setupMessageHandler(plinkoLift, 26);
 
   plinkoLane1 = new InputCommOutComponent(PLINKO_LANE1, HIGH, 4);
@@ -240,6 +260,35 @@ void setup() {
   magBridgeSpinnerStop = new InputCommOutComponent(MAG_BRIDGE_SPINNER_STOP, HIGH);
   setupMessageHandler(magBridgeSpinner, 34);
   setupCommOutComponent(magBridgeSpinnerStop, 35);
+
+  spinnerTarget1 = new InputCommOutComponent(SPINNER_TARGET_1, HIGH, 4);
+  spinnerTarget2 = new InputCommOutComponent(SPINNER_TARGET_2, HIGH, 4);
+  spinnerTarget3 = new InputCommOutComponent(SPINNER_TARGET_3, HIGH, 4);
+  spinnerTarget4 = new InputCommOutComponent(SPINNER_TARGET_4, HIGH, 4);
+  spinnerTarget5 = new InputCommOutComponent(SPINNER_TARGET_5, HIGH, 4);
+  spinnerTarget6 = new InputCommOutComponent(SPINNER_TARGET_6, HIGH, 4);
+  spinnerTarget7 = new InputCommOutComponent(SPINNER_TARGET_7, HIGH, 4);
+  spinnerTarget8 = new InputCommOutComponent(SPINNER_TARGET_8, HIGH, 4);
+
+  setupCommOutComponent(spinnerTarget1, 36);
+  setupCommOutComponent(spinnerTarget2, 37);
+  setupCommOutComponent(spinnerTarget3, 38);
+  setupCommOutComponent(spinnerTarget4, 39);
+  setupCommOutComponent(spinnerTarget5, 40);
+  setupCommOutComponent(spinnerTarget6, 41);
+  setupCommOutComponent(spinnerTarget7, 42);
+  setupCommOutComponent(spinnerTarget8, 43);
+
+  magBridgeReturnRollover = new InputCommOutComponent(MAG_BRIDGE_RETURN_ROLLOVER, HIGH, 10);
+  setupCommOutComponent(magBridgeReturnRollover, 44);
+
+  // NULL for now until we do something with the lane switches
+  handlers[45] = NULL;
+  handlers[46] = NULL;
+  handlers[47] = NULL;
+  handlers[48] = NULL;
+  handlers[49] = NULL;
+  handlers[50] = NULL;
 }
 
 void setupCommOutComponent(CommOutInterface *component, uint8_t id) {
@@ -307,6 +356,15 @@ void updatePlayModeComponents() {
   magBridgeSpinner->update();
   magBridgeSpinnerStop->update();
 
+  spinnerTarget1->update();
+  spinnerTarget2->update();
+  spinnerTarget3->update();
+  spinnerTarget4->update();
+  spinnerTarget5->update();
+  spinnerTarget6->update();
+  spinnerTarget7->update();
+  spinnerTarget8->update();
+
   multiBallSpindleMotor->update();
   multiBallBallDetect->update();
 
@@ -317,4 +375,6 @@ void updatePlayModeComponents() {
   plinkoLane4->update();
 
   sliderSensor->update();
+
+  magBridgeReturnRollover->update();
 }

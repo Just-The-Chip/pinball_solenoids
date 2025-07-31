@@ -64,3 +64,14 @@
  - Reset Motor: Pin 41
  - Rollover switch: Pin 29
 
+# Top Lane Rollover Switch
+ - Pin 36
+
+# Bottom Lane Rollover switches L to R
+ - Pin 11
+ - Pin 12
+ - Pin 13
+ - Pin 16
+ - Pin 0???????
+ - Pin 1
+
