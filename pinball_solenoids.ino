@@ -81,6 +81,9 @@
 #define PLINKO_LANE3 61
 #define PLINKO_LANE4 57
 
+#define LEFT_DRAIN_LANE 11
+#define RIGHT_DRAIN_LANE 1
+
 #define SLIDER A0
 
 MessageHandler* handlers[HANDLERS_LENGTH];
@@ -142,6 +145,9 @@ InputCommOutComponent *plinkoLane3;
 InputCommOutComponent *plinkoLane4;
 
 AnalogCommOutComponent *sliderSensor;
+
+InputCommOutComponent *leftDrainRollover;
+InputCommOutComponent *rightDrainRollover;
 
 PiComm *comm;
 
@@ -282,9 +288,12 @@ void setup() {
   magBridgeReturnRollover = new InputCommOutComponent(MAG_BRIDGE_RETURN_ROLLOVER, HIGH, 10);
   setupCommOutComponent(magBridgeReturnRollover, 44);
 
+  leftDrainRollover = new InputCommOutComponent(LEFT_DRAIN_LANE, HIGH, 4);
+  rightDrainRollover = new InputCommOutComponent(RIGHT_DRAIN_LANE, HIGH, 4);
+  setupCommOutComponent(leftDrainRollover, 45);
+  setupCommOutComponent(rightDrainRollover, 46);
+
   // NULL for now until we do something with the lane switches
-  handlers[45] = NULL;
-  handlers[46] = NULL;
   handlers[47] = NULL;
   handlers[48] = NULL;
   handlers[49] = NULL;
@@ -377,4 +386,7 @@ void updatePlayModeComponents() {
   sliderSensor->update();
 
   magBridgeReturnRollover->update();
+
+  leftDrainRollover->update();
+  rightDrainRollover->update();
 }
