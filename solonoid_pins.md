@@ -72,6 +72,6 @@
  - Pin 12
  - Pin 13
  - Pin 16
- - Pin 0???????
- - Pin 1
+ - Pin 17
+ - Pin 31
 

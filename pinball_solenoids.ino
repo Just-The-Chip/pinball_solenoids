@@ -82,7 +82,7 @@
 #define PLINKO_LANE4 57
 
 #define LEFT_DRAIN_LANE 11
-#define RIGHT_DRAIN_LANE 1
+#define RIGHT_DRAIN_LANE 31
 
 #define SLIDER A0
 
@@ -237,7 +237,7 @@ void setup() {
   multiBallSpindleMotor = new OutputCommTimeInComponent(MULTI_BALL_SPINDLE_MOTOR, LOW);
   setupMessageHandler(multiBallSpindleMotor, 24);
 
-  multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 25);
+  multiBallBallDetect = new InputCommOutComponent(MULTI_BALL_BALL_DETECT, HIGH, 10);
   setupCommOutComponent(multiBallBallDetect, 25);
 
   plinkoLift = new OutputCommInComponent(PLINKO_LIFT, 8500, LOW);

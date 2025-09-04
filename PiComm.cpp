@@ -16,24 +16,50 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
 
     int bytesRead = Serial.readBytesUntil(MESSAGE_TERMINATOR, message, MESSAGE_LENGTH);
 
-    // Serial.print("MESSAGE RECEIVED BYTES: ");
-    // Serial.print(bytesRead);
-
     if(bytesRead == (MESSAGE_LENGTH - 1)) {
       uint8_t handler_id = uint8_t(message[0]);
       unsigned char message_content = message[1];
 
-      // Serial.print(" HANDLER ID: ");
-      // Serial.print(handler_id);
-
       // if handler_id is within bounds of the handlers array
       if(handler_id < max_id && handlers[handler_id] != NULL) {
-        // Serial.print(" SUCCESS???");
         handlers[handler_id]->handleMessage(handler_id, message_content);
+      } else {
+        Serial.print("Handler ID ");
+        Serial.print(handler_id);
+        Serial.println(" is missing.");
       }
-    }
+    } else {
+      Serial.print("Invalid num of bytes: ");
+      Serial.print(bytesRead);
 
-    // Serial.println(" Donesies.");
+      if(bytesRead >= MESSAGE_LENGTH) {
+        Serial.print(", Byte0=");
+        Serial.print(uint8_t(message[0]));
+
+        Serial.print(", Byte1=");
+        Serial.print(uint8_t(message[1]));
+
+        Serial.print(", Byte3=");
+        Serial.print(uint8_t(message[2]));
+
+        int remaining_messages = available();
+        flushSerialBuffer(remaining_messages * MESSAGE_LENGTH);
+      } else {
+        Serial.print(", msg too small");
+      }
+
+      Serial.println("...end");
+
+    }
+  }
+}
+
+void PiComm::flushSerialBuffer(uint8_t flush_until = 0) {
+  while(Serial.available() > flush_until) {
+    char t = Serial.read();
+    Serial.print(" flushed: ");
+    Serial.print(uint8_t(t));
+    Serial.print(", ");
   }
 }
 

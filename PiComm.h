@@ -23,6 +23,7 @@ class PiComm : public MessageQueue {
   protected:
     virtual int available();
     virtual void writeMessage(PiMessage message);
+    virtual void flushSerialBuffer(uint8_t flush_until);
 
     ArduinoQueue<PiMessage> *writeQueue;
 };
