@@ -6,7 +6,7 @@
 
 #define MESSAGE_TERMINATOR '\n'
 #define MESSAGE_LENGTH 3
-#define HANDLERS_LENGTH 51  //  hard coded length of handlers array - number of components, including servos
+#define HANDLERS_LENGTH 54  //  hard coded length of handlers array - number of components, including servos
 
 struct PiMessage {
   uint8_t id;

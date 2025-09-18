@@ -84,12 +84,17 @@
 #define LEFT_DRAIN_LANE 11
 #define RIGHT_DRAIN_LANE 31
 
+#define LEFT_INNER_LANE_2 12
+#define LEFT_INNER_LANE_1 13
+#define RIGHT_INNER_LANE_1 16
+#define RIGHT_INNER_LANE_2 17
+
 #define SLIDER A0
 
 MessageHandler* handlers[HANDLERS_LENGTH];
 
-BasicComponent *leftFlipper;
-BasicComponent *rightFlipper;
+OutputComponent *leftFlipper;
+OutputComponent *rightFlipper;
 DualOutputComponent *leftSecondaryFlipper;
 BasicComponent *rightSecondaryFlipper;
 
@@ -149,6 +154,11 @@ AnalogCommOutComponent *sliderSensor;
 InputCommOutComponent *leftDrainRollover;
 InputCommOutComponent *rightDrainRollover;
 
+InputCommOutComponent *leftInnerRollover2;
+InputCommOutComponent *leftInnerRollover1;
+InputCommOutComponent *rightInnerRollover1;
+InputCommOutComponent *rightInnerRollover2;
+
 PiComm *comm;
 
 void setup() {
@@ -158,9 +168,10 @@ void setup() {
   
   comm = new PiComm();
 
-  // flippers don't need to do any communication
-  leftFlipper = new BasicComponent(BTN1_PIN, FLIPPER_L);
-  rightFlipper = new BasicComponent(BTN2_PIN, FLIPPER_R);
+  leftFlipper = new OutputComponent(BTN1_PIN, FLIPPER_L);
+  rightFlipper = new OutputComponent(BTN2_PIN, FLIPPER_R);
+  setupCommOutComponent(leftFlipper, 52);
+  setupCommOutComponent(rightFlipper, 53);
 
   leftSecondaryFlipper = new DualOutputComponent(BTN1_PIN, LEFT_SECONDARY_FLIPPER, LEFT_SECONDARY_FLIPPER_LOW_POWER, 150);
   rightSecondaryFlipper = new DualOutputComponent(BTN2_PIN, RIGHT_SECONDARY_FLIPPER, RIGHT_SECONDARY_FLIPPER_LOW_POWER, 150);
@@ -293,11 +304,18 @@ void setup() {
   setupCommOutComponent(leftDrainRollover, 45);
   setupCommOutComponent(rightDrainRollover, 46);
 
-  // NULL for now until we do something with the lane switches
-  handlers[47] = NULL;
-  handlers[48] = NULL;
-  handlers[49] = NULL;
-  handlers[50] = NULL;
+  leftInnerRollover2 = new InputCommOutComponent(LEFT_INNER_LANE_2, HIGH, 4);
+  leftInnerRollover1 = new InputCommOutComponent(LEFT_INNER_LANE_1, HIGH, 4);
+  rightInnerRollover1 = new InputCommOutComponent(RIGHT_INNER_LANE_1, HIGH, 4);
+  rightInnerRollover2 = new InputCommOutComponent(RIGHT_INNER_LANE_2, HIGH, 4);
+
+  setupCommOutComponent(leftInnerRollover2, 47);
+  setupCommOutComponent(leftInnerRollover1, 48);
+  setupCommOutComponent(rightInnerRollover1, 49);
+  setupCommOutComponent(rightInnerRollover2, 50);
+
+  handlers[51] = NULL; // on servo board
+  // 52 and 53 are the flippers and are defined at the top
 }
 
 void setupCommOutComponent(CommOutInterface *component, uint8_t id) {
@@ -389,4 +407,9 @@ void updatePlayModeComponents() {
 
   leftDrainRollover->update();
   rightDrainRollover->update();
+
+  leftInnerRollover2->update();
+  leftInnerRollover1->update();
+  rightInnerRollover1->update();
+  rightInnerRollover2->update();
 }
