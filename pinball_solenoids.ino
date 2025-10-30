@@ -264,7 +264,7 @@ void setup() {
   setupCommOutComponent(plinkoLane3, 29);
   setupCommOutComponent(plinkoLane4, 30);
 
-  int sliderMinVal = 39; // 50
+  int sliderMinVal = 15; // 39; // 50
   int sliderMaxVal = 420; // 640
   unsigned long readInterval = 20;
   sliderSensor = new AnalogCommOutComponent(SLIDER, sliderMinVal, sliderMaxVal, readInterval);

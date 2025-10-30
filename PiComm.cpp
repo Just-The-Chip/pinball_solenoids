@@ -49,7 +49,6 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
       }
 
       Serial.println("...end");
-
     }
   }
 }
