@@ -9,12 +9,25 @@
 #include "OutputCommTimeInComponent.h"
 #include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
+#include "RgbLED.h"
 
 #define BTN1_PIN 25 // left flipper in
 #define BTN2_PIN 24 // right flipper in
 
 #define FLIPPER_L 27
 #define FLIPPER_R 26
+
+#define BTN1_R 2
+#define BTN1_G 3
+#define BTN1_B 4
+
+#define BTN2_R 8
+#define BTN2_G 9
+#define BTN2_B 10
+
+#define START_R 5
+#define START_G 6
+#define START_B 7
 
 #define START_IN 33
 #define LAUNCHER 39 // solonoid 1 //48
@@ -90,6 +103,11 @@
 #define RIGHT_INNER_LANE_2 17
 
 #define SLIDER A0
+
+// Button LEDS simply flash rainbow, their appearance does not change or respond to any special conditions.
+RgbLED *btn1LED;
+RgbLED *btn2LED;
+RgbLED *startLED;
 
 MessageHandler* handlers[HANDLERS_LENGTH];
 
@@ -167,6 +185,10 @@ void setup() {
   Serial.begin(115200);
   
   comm = new PiComm();
+
+  btn1LED = new RgbLED(BTN1_R, BTN1_G, BTN1_B, COMMON_CATHODE);
+  btn2LED = new RgbLED(BTN2_R, BTN2_G, BTN2_B);
+  startLED = new RgbLED(START_R, START_G, START_B);
 
   leftFlipper = new OutputComponent(BTN1_PIN, FLIPPER_L);
   rightFlipper = new OutputComponent(BTN2_PIN, FLIPPER_R);
@@ -412,4 +434,9 @@ void updatePlayModeComponents() {
   leftInnerRollover1->update();
   rightInnerRollover1->update();
   rightInnerRollover2->update();
+
+  // Button LEDS
+  btn1LED->rainbow(15);
+  btn2LED->rainbow(15);
+  startLED->rainbow(15);
 }
