@@ -11,6 +11,7 @@ BasicComponent::BasicComponent(int _pinIn, int _pinOut, bool _inputRestValue, bo
   lastInputState = inputRestValue;
   currentInputState = inputRestValue;
   debounceTime = 0;
+  gameStatus = NULL;
 
   pinMode(pinIn, INPUT_PULLUP);
   pinMode(pinOut, OUTPUT);
@@ -25,7 +26,9 @@ void BasicComponent::update() {
 }
 
 void BasicComponent::triggerOutput() {
-  digitalWrite(pinOut, !outputRestValue);
+  if (gameStatus == NULL || gameStatus->isGameActive()) {
+    digitalWrite(pinOut, !outputRestValue);
+  }
 }
 
 void BasicComponent::untriggerOutput() {
@@ -54,4 +57,8 @@ bool BasicComponent::debouncedInputRead() {
   }
 
   return currentInputState;
+}
+
+void BasicComponent::setGameStatus(GameStatus *gameStatusHandler) {
+  gameStatus = gameStatusHandler;
 }

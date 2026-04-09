@@ -5,7 +5,12 @@
 
 PiComm::PiComm() {
   writeQueue = new ArduinoQueue<PiMessage>(25);
+  gameStatusHandler = NULL;
   Serial.begin(115200);
+}
+
+void PiComm::setGameStatusHandler(VariableGameStatus *statusHandler) {
+  gameStatusHandler = statusHandler;
 }
 
 // expected message format: 
@@ -20,8 +25,11 @@ void PiComm::handleIncomingMessages(MessageHandler* handlers[]) {
       uint8_t handler_id = uint8_t(message[0]);
       unsigned char message_content = message[1];
 
-      // if handler_id is within bounds of the handlers array
-      if(handler_id < max_id && handlers[handler_id] != NULL) {
+      if(handler_id == 255 && gameStatusHandler != NULL) {
+        // if handler_id is max value then it's a game status signal
+        handleGameStatusMessage(message_content);
+      } else if(handler_id < max_id && handlers[handler_id] != NULL) {
+        // if handler_id is within bounds of the handlers array
         handlers[handler_id]->handleMessage(handler_id, message_content);
       } else {
         Serial.print("Handler ID ");
@@ -60,6 +68,11 @@ void PiComm::flushSerialBuffer(uint8_t flush_until = 0) {
     Serial.print(uint8_t(t));
     Serial.print(", ");
   }
+}
+
+void PiComm::handleGameStatusMessage(unsigned char message_content) {
+  bool isActive = message_content > 0;
+  gameStatusHandler->setGameActive(isActive);
 }
 
 // not sure what happens when queue gets to max size

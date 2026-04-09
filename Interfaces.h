@@ -16,3 +16,8 @@ class CommOutInterface {
     virtual void setComponentID(uint8_t id) = 0;
     virtual void setMessageQueue(MessageQueue* queue) = 0;
 };
+
+class GameStatus {
+  public:
+    virtual bool isGameActive() = 0;
+};

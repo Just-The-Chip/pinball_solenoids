@@ -1,4 +1,5 @@
 #pragma once
+#include "Interfaces.h"
 #include <stdint.h>
 #include "Arduino.h"
 
@@ -17,6 +18,7 @@ class BasicComponent {
     virtual bool debouncedInputRead();
     virtual void triggerOutput();
     virtual void untriggerOutput();
+    virtual void setGameStatus(GameStatus *gameStatus);
 
   protected:
     int	pinIn;
@@ -28,4 +30,5 @@ class BasicComponent {
     bool lastInputState;
     bool currentInputState;
     unsigned long debounceTime;
+    GameStatus* gameStatus;
   };

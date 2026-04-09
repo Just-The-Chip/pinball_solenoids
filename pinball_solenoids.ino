@@ -10,6 +10,7 @@
 #include "AnalogCommOutComponent.h"
 #include "Interfaces.h"
 #include "RgbLED.h"
+#include "VariableGameStatus.h"
 
 #define BTN1_PIN 25 // left flipper in
 #define BTN2_PIN 24 // right flipper in
@@ -103,6 +104,8 @@
 #define RIGHT_INNER_LANE_2 17
 
 #define SLIDER A0
+
+VariableGameStatus *statusHandler;
 
 // Button LEDS simply flash rainbow, their appearance does not change or respond to any special conditions.
 RgbLED *btn1LED;
@@ -338,6 +341,13 @@ void setup() {
 
   handlers[51] = NULL; // on servo board
   // 52 and 53 are the flippers and are defined at the top
+
+  statusHandler = new VariableGameStatus();
+  comm->setGameStatusHandler(statusHandler);
+  leftFlipper->setGameStatus(statusHandler);
+  rightFlipper->setGameStatus(statusHandler);
+  leftSecondaryFlipper->setGameStatus(statusHandler);
+  rightSecondaryFlipper->setGameStatus(statusHandler);
 }
 
 void setupCommOutComponent(CommOutInterface *component, uint8_t id) {

@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "Arduino.h"
 #include "Interfaces.h"
+#include "VariableGameStatus.h"
 #include <ArduinoQueue.h>
 
 #define MESSAGE_TERMINATOR '\n'
@@ -16,6 +17,7 @@ struct PiMessage {
 class PiComm : public MessageQueue {
   public:
     PiComm();
+    virtual void setGameStatusHandler(VariableGameStatus* statusHandler);
     virtual void handleIncomingMessages(MessageHandler* handlers[]);
     virtual void queueOutgoingMessage(uint8_t component_id, unsigned char message_content);
     virtual void writeQueuedMessages();
@@ -24,6 +26,8 @@ class PiComm : public MessageQueue {
     virtual int available();
     virtual void writeMessage(PiMessage message);
     virtual void flushSerialBuffer(uint8_t flush_until);
+    virtual void handleGameStatusMessage(unsigned char message_conent);
 
     ArduinoQueue<PiMessage> *writeQueue;
+    VariableGameStatus *gameStatusHandler;
 };
